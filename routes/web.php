@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NilaiController;
+use App\Http\Controllers\StaffController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,3 +30,5 @@ Route::get('/nilai', [NilaiController::class, 'index']);
 Route::get('/daftar_nilai', function () {
     return view('daftar_nilai');
 });
+
+Route::resource('staff', StaffController::class); // route resource otomatis kepanggil semua.
