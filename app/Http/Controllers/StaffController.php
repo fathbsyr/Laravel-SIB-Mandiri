@@ -13,7 +13,9 @@ class StaffController extends Controller
     public function index()
     {
         //
-        return view('staff.index');
+        $staff = Staff::all(); //syntax pakai eloquent
+        return view('staff.index', compact('staff'));
+        //compact salah satu library yang membantu kita untuk mengimport variabel ke view
     }
 
     /**

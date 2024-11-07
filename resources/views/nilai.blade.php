@@ -1,3 +1,6 @@
+@extends('layout.app')
+
+@section('content')
 @php
 $nama = "Rahmat";
 $nilai = 60;
@@ -13,3 +16,4 @@ $nilai = 60;
 <p> {{$mhs1}} </p>
 <p>Dengan Nilai: {{ $nilai }}</p> 
 <p>Ket: {{ $ket }}</p> 
+@endsection
