@@ -65,4 +65,36 @@ class StaffController extends Controller
     {
         //
     }
+
+    // mengirim data kedalam routing dan diakses api get untuk dilihat datanya secara json    
+    public function apiStaff() {
+        $staff = Staff::all();
+        return response()->json(
+            [
+                'success' => true,
+                'massage' => 'Melihat data staff',
+                'data' => $staff
+            ], 
+        200);
+    }
+
+    public function apiStaffDetail($id) {
+        $staff = Staff::find($id);
+        if ($staff) {
+            return response()->json(
+                [
+                    'success' => true,
+                    'massage' => 'Detail Staff per ID',
+                    'data' => $staff
+                ], 200  
+            );
+        } else {
+            return response()->json(
+                [
+                    'success' => false,
+                    'massage' => 'Staff tidak ada',
+                ], 404  
+            );
+        }
+    }
 }
