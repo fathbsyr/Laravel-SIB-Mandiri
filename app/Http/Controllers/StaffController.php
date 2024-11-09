@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Staff;
+use App\Http\Resources\ResponsResource;
 
 class StaffController extends Controller
 {
@@ -69,32 +70,23 @@ class StaffController extends Controller
     // mengirim data kedalam routing dan diakses api get untuk dilihat datanya secara json    
     public function apiStaff() {
         $staff = Staff::all();
-        return response()->json(
-            [
-                'success' => true,
-                'massage' => 'Melihat data staff',
-                'data' => $staff
-            ], 
-        200);
+
+        return new ResponsResource(true, 'Data Staff berhasil dilihat', $staff);
+        // return response()->json(
+        //     [
+        //         'success' => true,
+        //         'massage' => 'Melihat data staff',
+        //         'data' => $staff
+        //     ], 
+        // 200);
     }
 
     public function apiStaffDetail($id) {
         $staff = Staff::find($id);
         if ($staff) {
-            return response()->json(
-                [
-                    'success' => true,
-                    'massage' => 'Detail Staff per ID',
-                    'data' => $staff
-                ], 200  
-            );
+            return new ResponsResource(true, 'Detail Staff per ID', $staff);
         } else {
-            return response()->json(
-                [
-                    'success' => false,
-                    'massage' => 'Staff tidak ada',
-                ], 404  
-            );
+            return new ResponsResource(false, 'Staff tidak ada', $staff);
         }
     }
 }
