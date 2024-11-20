@@ -9,5 +9,5 @@ class Agama extends Model
     //
     protected $table = 'agama';
     protected $fillable = ['agama'];
-    protected $timestamps = false;
+    public $timestamps = false;
 }

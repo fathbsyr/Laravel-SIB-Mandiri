@@ -15,4 +15,11 @@ class AgamaController extends Controller
 
         return new ResponsResource(true, 'Data Agama', $agama);
     }
+
+    public function store(Request $request) {
+        $agama = Agama::create([
+            'agama' => $request->agama,
+        ]);
+        return new ResponsResource(true, 'Berhasil Menambahkan Agama', $agama);
+    } 
 }

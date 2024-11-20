@@ -9,5 +9,5 @@ class Kesatuan extends Model
     //
     protected $table = 'kesatuan';
     protected $fillable = ['kesatuan'];
-    protected $timestamps = false;
+    public $timestamps = false;
 }

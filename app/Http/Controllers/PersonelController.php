@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Personel;
-use App\Http\Resources\PersonelResource;
 use App\Http\Resources\ResponsResource;
 use DB;
-use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Validator;
 
 class PersonelController extends Controller
 {
@@ -40,6 +39,23 @@ class PersonelController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required|min:3',
+            'nrp' => 'required|unique',
+            'agama_id' => 'required|numeric',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $personel = Personel::create([
+            'nama' => $request->nama,
+            'nrp'=> $request->nrp,
+            'alamat'=> $request->alamat,
+            'agama_id'=> $request->agama_id,
+            'kesatuan_id'=> $request->kesatuan_id,
+        ]);
+        return new ResponsResource(true, 'Berhasil Menambahkan Personel', $personel);
     }
 
     /**
@@ -48,6 +64,13 @@ class PersonelController extends Controller
     public function show(string $id)
     {
         //
+        $personel = Personel::join('agama', 'agama.id', '=','personel.agama_id')
+        -> join('kesatuan', 'kesatuan.id', '=','personel.kesatuan_id')
+        -> select('personel.nama', 'personel.nrp', 'personel.alamat', 'agama', 'kesatuan')
+        -> where('personel.id', '=', $id)
+        -> get();
+
+        return new ResponsResource(true, 'Detail Personel', $personel);
     }
 
     /**

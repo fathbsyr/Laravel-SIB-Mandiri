@@ -38,6 +38,15 @@ class TugasController extends Controller
     public function store(Request $request)
     {
         //
+        $tugas = Tugas::create([
+            'no_surat' => $request->no_surat,
+            'mulai' => $request->mulai,
+            'akhir' => $request->akhir,
+            'provinsi_id' => $request->provinsi_id,
+            'personel_id' => $request->personel_id,
+            'pimpinan_id' => $request->pimpinan_id
+        ]);
+        return new ResponsResource(true, 'Berhasil Menambahkan Tugas', $tugas);
     }
 
     /**
@@ -46,6 +55,13 @@ class TugasController extends Controller
     public function show(string $id)
     {
         //
+        $tugas = Tugas::join('provinsi', 'provinsi.id', '=','tugas.provinsi_id')
+        -> join('personel', 'personel.id', '=','tugas.personel_id')
+        -> join('pimpinan', 'pimpinan.id', '=','tugas.pimpinan_id')
+        -> select('tugas.no_surat', 'tugas.mulai', 'tugas.akhir', 'provinsi.wilayah', 'personel.nama as personel', 'pimpinan.nama as pimpinan')
+        -> where('tugas.id', '=', $id)
+        -> get(); 
+        return new ResponsResource(true, 'Detail Tugas', $tugas);
     }
 
     /**
