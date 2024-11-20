@@ -87,6 +87,22 @@ class PersonelController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required|min:3',
+            'agama_id' => 'required|numeric',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $personel = Personel::whereid($id)->update([
+            'nama' => $request->nama,
+            'nrp'=> $request->nrp,
+            'alamat'=> $request->alamat,
+            'agama_id'=> $request->agama_id,
+            'kesatuan_id'=> $request->kesatuan_id,
+        ]);
+        return new ResponsResource(true, 'Data Personel Berhasil Diupdate', $personel);
     }
 
     /**
@@ -95,5 +111,8 @@ class PersonelController extends Controller
     public function destroy(string $id)
     {
         //
+        $personel = Personel::whereid($id)->first();
+        $personel->delete();
+        return new ResponsResource(true, 'Data Personel Berhasil Dihapus', $personel);
     }
 }

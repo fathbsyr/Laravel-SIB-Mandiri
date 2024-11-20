@@ -30,6 +30,8 @@ Route::get('/kesatuan', [KesatuanController::class, 'index']);
 Route::get('/personel', [PersonelController::class, 'index']);
 Route::get('/personel/{id}', [PersonelController::class, 'show']);
 Route::post('/personel/create', [PersonelController::class, 'store']);
+Route::put('/personel/{id}', [PersonelController::class, 'update']);
+Route::delete('/personel/{id}', [PersonelController::class, 'destroy']);
 
 //tugas
 Route::get('/tugas', [TugasController::class, 'index']);
