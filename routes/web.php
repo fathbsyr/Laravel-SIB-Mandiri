@@ -21,9 +21,9 @@ Route::get('/kabar', function () {
     return view('kondisi');
 });// routing url yang ngarah ke tampilan file kodisi di direktori views
 
-// Route::get('/nilai', function () {
-//     return view('nilai');
-// });
+Route::get('/nilai', function () {
+    return view('nilai');
+});
 
 Route::get('/nilai', [NilaiController::class, 'index']);
 

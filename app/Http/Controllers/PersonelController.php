@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Personel;
 use App\Http\Resources\ResponsResource;
 use DB;
+use App\Models\Agama;
+use App\Models\Kesatuan;
 use Illuminate\Support\Facades\Validator;
 
 class PersonelController extends Controller
@@ -19,7 +21,8 @@ class PersonelController extends Controller
         // $personel = DB::table('personel')->get();
         $personel = Personel::join('agama', 'agama.id', '=','personel.agama_id')
         -> join('kesatuan', 'kesatuan.id', '=','personel.kesatuan_id')
-        -> select('personel.nama', 'personel.nrp', 'personel.alamat', 'agama', 'kesatuan')
+        // -> select('personel.nama', 'personel.nrp', 'personel.alamat', 'agama', 'kesatuan')
+        -> select('personel.*', 'kesatuan.kesatuan', 'agama.agama')
         -> get();
 
         return new ResponsResource(true, 'Data Personel', $personel);
@@ -41,7 +44,7 @@ class PersonelController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'nama' => 'required|min:3',
-            'nrp' => 'required|unique',
+            'nrp' => 'required',
             'agama_id' => 'required|numeric',
         ]);
         if ($validator->fails()) {
@@ -79,6 +82,15 @@ class PersonelController extends Controller
     public function edit(string $id)
     {
         //
+        $agama = Agama::all();
+        $kesatuan = Kesatuan::all(); 
+        $personel = Personel::join('agama', 'agama.id', '=','personel.agama_id')
+        -> join('kesatuan', 'kesatuan.id', '=','personel.kesatuan_id')
+        -> select('personel.nama', 'personel.nrp', 'personel.alamat', 'agama', 'kesatuan')
+        -> where('personel.id', '=', $id)
+        -> get();
+
+        return new ResponsResource(true, 'Detail Personel', $personel, $agama, $kesatuan);
     }
 
     /**
